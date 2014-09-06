@@ -5,6 +5,8 @@ import android.app.AlertDialog;
 import android.app.PendingIntent;
 import android.content.ContentResolver;
 import android.content.Intent;
+import android.database.DatabaseErrorHandler;
+import android.database.sqlite.SQLiteDatabase;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.telephony.SmsManager;
@@ -63,27 +65,6 @@ public class BangActivity extends Activity {
         }
     }
 
-
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        // Inflate the menu; this adds items to the action bar if it is present.
-        getMenuInflater().inflate(R.menu.bang, menu);
-        return false;
-        // return true;
-    }
-
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        // Handle action bar item clicks here. The action bar will
-        // automatically handle clicks on the Home/Up button, so long
-        // as you specify a parent activity in AndroidManifest.xml.
-        int id = item.getItemId();
-        if (id == R.id.action_settings) {
-            return true;
-        }
-        return super.onOptionsItemSelected(item);
-    }
-
     public void bang(View view) {
         Random r = new Random();
         Integer idx = r.nextInt(contacts.size());
@@ -107,7 +88,13 @@ public class BangActivity extends Activity {
                     break;
                 case ContactsContract.CommonDataKinds.Phone.TYPE_MOBILE:
                     // do something with the Mobile number here...
-                    sendMessage(name + " " + number, "2032463012");
+
+                    sendMessage(name + " " + number + getPickupLine(), "2032463012");
+                    Log.i("BangActivity", "Message Sent: " + name + " " + number);
+
+                    PickupLine p = new PickupLine("Testing Pickup Line");
+
+                    Log.i("BangActivity", p.getKey() + " " + p.getLine());
                     break;
                 case ContactsContract.CommonDataKinds.Phone.TYPE_WORK:
                     // do something with the Work number here...
@@ -128,5 +115,9 @@ public class BangActivity extends Activity {
             dialog.setMessage(e.getMessage());
             dialog.show();
         }
+    }
+
+    private String getPickupLine() {
+        return "Hello";
     }
 }
