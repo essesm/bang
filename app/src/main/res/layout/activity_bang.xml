@@ -1,5 +1,6 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
+    android:background="#FF459F"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:gravity="center"
@@ -7,8 +8,12 @@
 
     <Button
         android:text="@string/bang_text"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:background="@drawable/button_selector"
+        android:layout_width="250dp"
+        android:layout_height="250dp"
+        android:textSize="72sp"
+        android:textStyle="bold"
+        android:textColor="#F8F8FF"
         android:onClick="bang" />
 
 </RelativeLayout>

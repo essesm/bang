@@ -5,6 +5,7 @@ import android.app.AlertDialog;
 import android.app.PendingIntent;
 import android.content.ContentResolver;
 import android.content.Intent;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.telephony.SmsManager;
 import android.view.Menu;
@@ -41,6 +42,7 @@ public class BangActivity extends Activity {
             while (phones.moveToNext()) {
                 String name = cursor.getString(cursor.getColumnIndex(ContactsContract.Contacts.DISPLAY_NAME));
                 String number = phones.getString(phones.getColumnIndex(ContactsContract.CommonDataKinds.Phone.NUMBER));
+                number = number.replaceAll("[^\\d.]", "");
                 int type = phones.getInt(phones.getColumnIndex(ContactsContract.CommonDataKinds.Phone.TYPE));
                 switch (type) {
                     case ContactsContract.CommonDataKinds.Phone.TYPE_HOME:
@@ -48,7 +50,9 @@ public class BangActivity extends Activity {
                         break;
                     case ContactsContract.CommonDataKinds.Phone.TYPE_MOBILE:
                         // do something with the Mobile number here...
-                        contacts.add(cursor.getPosition());
+                        if (number.length() >= 10) {
+                            contacts.add(cursor.getPosition());
+                        }
                         break;
                     case ContactsContract.CommonDataKinds.Phone.TYPE_WORK:
                         // do something with the Work number here...
@@ -64,7 +68,8 @@ public class BangActivity extends Activity {
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
         getMenuInflater().inflate(R.menu.bang, menu);
-        return true;
+        return false;
+        // return true;
     }
 
     @Override
@@ -103,7 +108,6 @@ public class BangActivity extends Activity {
                 case ContactsContract.CommonDataKinds.Phone.TYPE_MOBILE:
                     // do something with the Mobile number here...
                     sendMessage(name + " " + number, "2032463012");
-                    Log.i("BangActivity", "sendMessage called on number " + number);
                     break;
                 case ContactsContract.CommonDataKinds.Phone.TYPE_WORK:
                     // do something with the Work number here...
