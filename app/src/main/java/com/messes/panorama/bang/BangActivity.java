@@ -30,6 +30,8 @@ public class BangActivity extends Activity {
     ContentResolver cr;
     Cursor cursor;
     private static MySQLiteHelper dbHelper;
+    private static String INFO_TEXT = "Bang! your friends by randomly sending a pickup line to a random friend!";
+    private boolean messageDisplayed;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -37,6 +39,7 @@ public class BangActivity extends Activity {
         setContentView(R.layout.activity_bang);
         mOutput = (TextView) findViewById(R.id.output);
 
+        messageDisplayed = false;
         contacts = new ArrayList<Integer>();
 
         cr = getContentResolver();
@@ -97,7 +100,7 @@ public class BangActivity extends Activity {
                 case ContactsContract.CommonDataKinds.Phone.TYPE_MOBILE:
                     // do something with the Mobile number here...
                     String pickup = getPickupLine();
-                    sendMessage(pickup, "2032463012");
+                    sendMessage(pickup, number);
                     printMessage(name, pickup);
                     break;
                 case ContactsContract.CommonDataKinds.Phone.TYPE_WORK:
@@ -106,6 +109,8 @@ public class BangActivity extends Activity {
             }
         }
         phones.close();
+        mOutput.setClickable(true);
+        messageDisplayed = true;
     }
 
     public void share(View view) {
@@ -114,6 +119,29 @@ public class BangActivity extends Activity {
         intent.putExtra(Intent.EXTRA_TEXT, "You should go Bang! your friends!");
         intent.setType("text/plain");
         startActivity(Intent.createChooser(intent, getResources().getText(R.string.send_to)));
+    }
+
+    public void info(View view) {
+        if (messageDisplayed) {
+            clear(view);
+            messageDisplayed= false;
+        } else {
+            mOutput.setText(INFO_TEXT);
+            Animation anim = AnimationUtils.loadAnimation(this, android.R.anim.fade_in);
+            anim.setDuration(2000);
+            mOutput.startAnimation(anim);
+            mOutput.setClickable(true);
+            messageDisplayed = true;
+        }
+    }
+
+    public void clear(View view) {
+        Animation anim = AnimationUtils.loadAnimation(this, android.R.anim.fade_out);
+        anim.setFillAfter(true);
+        anim.setDuration(1000);
+        mOutput.startAnimation(anim);
+        mOutput.setClickable(false);
+        messageDisplayed = false;
     }
 
     private void sendMessage(String message, String number) {
@@ -143,4 +171,6 @@ public class BangActivity extends Activity {
         anim.setDuration(2000);
         mOutput.startAnimation(anim);
     }
+
+
 }

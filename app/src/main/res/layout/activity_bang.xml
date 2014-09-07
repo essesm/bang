@@ -30,15 +30,30 @@
         android:fontFamily="sans-serif-condensed"
         android:gravity="center"
         android:layout_marginBottom="12dp"
-        android:padding="16dp" />
+        android:padding="16dp"
+        android:clickable="true"
+        android:onClick="clear" />
 
-    <ImageButton
-        android:layout_width="52dp"
-        android:layout_height="52dp"
-        android:layout_centerHorizontal="true"
+    <LinearLayout
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
-        android:background="@drawable/share_selector"
-        android:layout_margin="16dp"
-        android:onClick="share"/>
+        android:gravity="center" >
+
+        <ImageButton
+            android:layout_width="52dp"
+            android:layout_height="52dp"
+            android:background="@drawable/share_selector"
+            android:layout_margin="24dp"
+            android:onClick="share"/>
+
+        <ImageButton
+            android:layout_width="52dp"
+            android:layout_height="52dp"
+            android:background="@drawable/info_selector"
+            android:layout_margin="24dp"
+            android:onClick="info" />
+
+        </LinearLayout>
 
 </RelativeLayout>
