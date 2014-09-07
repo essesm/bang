@@ -16,25 +16,31 @@ import android.view.View;
 import android.util.Log;
 import android.database.Cursor;
 import android.provider.ContactsContract;
+import android.widget.TextView;
 import java.util.ArrayList;
 import java.util.Random;
 
 
 public class BangActivity extends Activity {
 
-    ContentResolver cr;
+    private TextView mOutput;
     ArrayList<Integer> contacts;
+    ContentResolver cr;
     Cursor cursor;
+    private static MySQLiteHelper dbHelper;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_bang);
+        mOutput = (TextView) findViewById(R.id.output);
 
         contacts = new ArrayList<Integer>();
 
         cr = getContentResolver();
         cursor = cr.query(ContactsContract.Contacts.CONTENT_URI, null, null, null, null);
+        dbHelper = new MySQLiteHelper(this);
+        Log.i("BangActivity", "Created MySQLiteHelper object");
 
         while (cursor.moveToNext()) {
             String contactId = cursor.getString(cursor.getColumnIndex(ContactsContract.Contacts._ID));
@@ -88,13 +94,9 @@ public class BangActivity extends Activity {
                     break;
                 case ContactsContract.CommonDataKinds.Phone.TYPE_MOBILE:
                     // do something with the Mobile number here...
-
-                    sendMessage(name + " " + number + getPickupLine(), "2032463012");
-                    Log.i("BangActivity", "Message Sent: " + name + " " + number);
-
-                    PickupLine p = new PickupLine("Testing Pickup Line");
-
-                    Log.i("BangActivity", p.getKey() + " " + p.getLine());
+                    String pickup = getPickupLine();
+                    sendMessage(pickup, "2032463012");
+                    printMessage(name, pickup);
                     break;
                 case ContactsContract.CommonDataKinds.Phone.TYPE_WORK:
                     // do something with the Work number here...
@@ -107,7 +109,7 @@ public class BangActivity extends Activity {
     private void sendMessage(String message, String number) {
         try {
             PendingIntent pi = PendingIntent.getBroadcast(BangActivity.this, 0, new Intent("SMS_SENT"), 0);
-            SmsManager.getDefault().sendTextMessage(number,null, message, pi, null);
+            SmsManager.getDefault().sendTextMessage(number, null, message, pi, null);
             Log.i("BangActivity", "sendMessage end of try block");
         } catch (Exception e) {
             AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(BangActivity.this);
@@ -118,6 +120,14 @@ public class BangActivity extends Activity {
     }
 
     private String getPickupLine() {
-        return "Hello";
+        Random r = new Random();
+        Log.i("BangActivity", "SIZE IS " + Long.toString(dbHelper.size()));
+        long idx = r.nextInt((int) dbHelper.size());
+
+        return dbHelper.getLine(idx);
+    }
+
+    private void printMessage(String name, String message) {
+        mOutput.setText(name + "\n\n" + message);
     }
 }

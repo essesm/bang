@@ -3,17 +3,33 @@
     android:background="#FF459F"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:gravity="center"
     tools:context=".BangActivity">
 
     <Button
+        android:id="@+id/bang"
         android:text="@string/bang_text"
         android:background="@drawable/button_selector"
         android:layout_width="250dp"
         android:layout_height="250dp"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="72dp"
         android:textSize="72sp"
         android:textStyle="bold"
         android:textColor="#F8F8FF"
         android:onClick="bang" />
+
+    <TextView
+        android:id="@+id/output"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerHorizontal="true"
+        android:layout_below="@id/bang"
+        android:textColor="#F8F8FF"
+        android:textSize="24sp"
+        android:textStyle="bold"
+        android:fontFamily="sans-serif-condensed"
+        android:gravity="center"
+        android:layout_marginBottom="12dp"
+        android:padding="16dp" />
 
 </RelativeLayout>
