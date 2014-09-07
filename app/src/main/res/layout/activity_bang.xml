@@ -32,4 +32,13 @@
         android:layout_marginBottom="12dp"
         android:padding="16dp" />
 
+    <ImageButton
+        android:layout_width="52dp"
+        android:layout_height="52dp"
+        android:layout_centerHorizontal="true"
+        android:layout_alignParentBottom="true"
+        android:background="@drawable/share_selector"
+        android:layout_margin="16dp"
+        android:onClick="share"/>
+
 </RelativeLayout>

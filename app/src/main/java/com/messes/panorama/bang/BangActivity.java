@@ -13,9 +13,11 @@ import android.telephony.SmsManager;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.animation.Animation;
 import android.util.Log;
 import android.database.Cursor;
 import android.provider.ContactsContract;
+import android.view.animation.AnimationUtils;
 import android.widget.TextView;
 import java.util.ArrayList;
 import java.util.Random;
@@ -106,6 +108,14 @@ public class BangActivity extends Activity {
         phones.close();
     }
 
+    public void share(View view) {
+        Intent intent = new Intent();
+        intent.setAction(Intent.ACTION_SEND);
+        intent.putExtra(Intent.EXTRA_TEXT, "You should go Bang! your friends!");
+        intent.setType("text/plain");
+        startActivity(Intent.createChooser(intent, getResources().getText(R.string.send_to)));
+    }
+
     private void sendMessage(String message, String number) {
         try {
             PendingIntent pi = PendingIntent.getBroadcast(BangActivity.this, 0, new Intent("SMS_SENT"), 0);
@@ -129,5 +139,8 @@ public class BangActivity extends Activity {
 
     private void printMessage(String name, String message) {
         mOutput.setText(name + "\n\n" + message);
+        Animation anim = AnimationUtils.loadAnimation(this, android.R.anim.fade_in);
+        anim.setDuration(2000);
+        mOutput.startAnimation(anim);
     }
 }
